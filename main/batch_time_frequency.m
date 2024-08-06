@@ -1,8 +1,8 @@
 %% General stuff
 data_dir = 'C:\Users\berne\Documents\Master FU\2. Semester\NMDA practical\EEG\Multimodal\sub0';
 function_directory = 'C:\Users\berne\Documents\Master FU\2. Semester\NMDA practical\EEG\Multimodal\functions';
-addpath 'C:\Users\berne\Documents\MATLAB\spm12';
-runs = 1:6;
+output_dir = 'C:\Users\berne\Documents\Master FU\2. Semester\NMDA practical\EEG\Multimodal\output';
+
 subs = [14,15,16,17];
 
 %% Time Frequency analysis
@@ -24,7 +24,7 @@ end
 %   once for phase
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\tphMcbdspmeeg_run_01_sss.mat'));
+    file = fullfile(strcat(file_dir,'\tph_Mcbdspmeeg_run_01_sss.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
@@ -34,7 +34,7 @@ end
 %   once for power
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\tfMcbdspmeeg_run_01_sss.mat'));
+    file = fullfile(strcat(file_dir,'\tf_Mcbdspmeeg_run_01_sss.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
@@ -46,7 +46,7 @@ end
 %   once for power
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\ptphMcbdspmeeg_run_01_sss.mat'));
+    file = fullfile(strcat(file_dir,'\ptph_Mcbdspmeeg_run_01_sss.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
@@ -56,7 +56,7 @@ end
 %   once for phase for i = 1:length(subs)
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\ptfMcbdspmeeg_run_01_sss.mat'));
+    file = fullfile(strcat(file_dir,'\ptf_Mcbdspmeeg_run_01_sss.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
@@ -68,7 +68,7 @@ end
 %   once for power
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\mptfMcbdspmeeg_run_01_sss.mat'));
+    file = fullfile(strcat(file_dir,'\mptf_Mcbdspmeeg_run_01_sss.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
@@ -79,27 +79,27 @@ end
 
 % once for phase
     % specify contrasts
-contrasts = {};
-contrast_labels = {};
+contr = [0.5 0.5 -1];
+contrast_label = 'Faces vs. Scrambled' ;
 
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\mpthfMcbdspmeeg_run_01_sss.mat'));
+    file = fullfile(strcat(file_dir,'\mptph_Mcbdspmeeg_run_01_sss.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
-    B07_averaging_contrast_phase(file, contrasts, contrast_labels)
+    B07_averaging_contrast_phase(file, contr, contrast_label)
 end
 
-% once for phase
+% once for power
 
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\rmptfMcbdspmeeg_run_01_sss.mat'));
+    file = fullfile(strcat(file_dir,'\rmptf_Mcbdspmeeg_run_01_sss.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
-    B08_averaging_contrast_power(file, contrasts, contrast_labels)
+    B08_averaging_contrast_power(file, contr, contrast_label)
 end
 
 %% Convert 2 images 
@@ -108,20 +108,27 @@ end
 
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\wmptfMcbdspmeeg_run_01_sss.mat'));
+    file = fullfile(strcat(file_dir,'\wrmptf_Mcbdspmeeg_run_01_sss.mat'));
+    file_2 = fullfile(strcat(file_dir,'\wmptph_Mcbdspmeeg_run_01_sss.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
-    B09_convert2images(file)
+    B09_convert2images(file, file_2)
 end
 
 %% Specification
 
-%   specify conditions in correct order
-%   create a loop for as many subjects as one has 
-
-C01_specification(data_dir, subs, conditions)
+%   specify conditions in correct order 
+conditions = [1, 2, 3];
+C01_specification(data_dir, subs, conditions, output_dir)
 
 %% estimation
 
 C02_estimation(output_dir)
+
+%% contrast
+file = fullfile(output_dir, '\SPM.mat');
+contrast = [eye(3) ones(3,4)/4];
+contrast_name = 'All Effects';
+
+C03_contrast_time_frequency(file, contrast, contrast_name)
