@@ -3,6 +3,7 @@ data_dir = 'C:\Users\berne\Documents\Master FU\2. Semester\NMDA practical\EEG\Mu
 function_directory = 'C:\Users\berne\Documents\Master FU\2. Semester\NMDA practical\EEG\Multimodal\functions';
 addpath 'C:\Users\berne\Documents\MATLAB\spm12';
 runs = 1:6;
+
 subs = [14,15,16,17];
 
 %% Preprocessing - every run individually 
@@ -36,8 +37,12 @@ for sub = subs
     % add path to function_directory 
     for run = 1:length(runs) 
         file = fullfile(strcat(file_dir,'\spmeeg_run_0',num2str(run),'_sss.mat'));
-        
-        A02_prepare(file)
+        load(file, 'D');
+        D.channels(367).type = 'EOG';
+        D.channels(368).type = 'EOG';
+        D.channels(369).type = 'ECG';
+        D.channels(370).type = 'Other';
+        save(file, 'D')
     end
 end
 
@@ -106,9 +111,19 @@ end
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
     file_1 = fullfile(strcat(file_dir,'\cbdspmeeg_run_01_sss.mat'));
-    file_2 = fullfile(strcat(file_dir,'\cbdspmeeg_run_01_sss.mat'));
+    file_2 = fullfile(strcat(file_dir,'\avref_montage.mat'));
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
     A08_montaging(file_1, file_2)
+end
+
+% Prepare
+for sub = subs
+    file_dir = fullfile(strcat(data_dir,num2str(sub)));
+    file = fullfile(strcat(file_dir,'\Mcbdspmeeg_run_01_sss.mat'));
+    % set working directory to subject 
+    cd(file_dir) 
+    addpath(function_directory); % add path to function_directory 
+    A09_prepare(file)
 end
