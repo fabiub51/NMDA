@@ -1,7 +1,7 @@
 %% General stuff
 data_dir = 'C:\Users\berne\Documents\Master FU\2. Semester\NMDA practical\EEG\Multimodal\sub0';
 function_directory = 'C:\Users\berne\Documents\Master FU\2. Semester\NMDA practical\EEG\Multimodal\functions';
-
+runs = 1:6;
 subs = [14,15,16,17];
 
 %% Evoked Analysis
