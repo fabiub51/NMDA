@@ -118,12 +118,3 @@ for sub = subs
     A08_montaging(file_1, file_2)
 end
 
-% Prepare
-for sub = subs
-    file_dir = fullfile(strcat(data_dir,num2str(sub)));
-    file = fullfile(strcat(file_dir,'\Mcbdspmeeg_run_01_sss.mat'));
-    % set working directory to subject 
-    cd(file_dir) 
-    addpath(function_directory); % add path to function_directory 
-    A09_prepare(file)
-end
