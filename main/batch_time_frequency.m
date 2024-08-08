@@ -78,9 +78,6 @@ end
 %% Averaging contrasts
 
 % once for phase
-    % specify contrasts
-contr = [0.5 0.5 -1];
-contrast_label = 'Faces vs. Scrambled' ;
 
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
@@ -88,7 +85,7 @@ for sub = subs
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
-    B07_averaging_contrast_phase(file, contr, contrast_label)
+    B07_averaging_contrast_phase(file) % contrasts specified within the function 
 end
 
 % once for power
@@ -99,7 +96,7 @@ for sub = subs
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
-    B08_averaging_contrast_power(file, contr, contrast_label)
+    B08_averaging_contrast_power(file) % contrasts specified within the function 
 end
 
 %% Convert 2 images 
@@ -128,7 +125,7 @@ C02_estimation(output_dir)
 
 %% contrast
 file = fullfile(output_dir, '\SPM.mat');
-contrast = [eye(3) ones(3,4)/4];
+contrast = [eye(3) ones(3,2)/2];
 contrast_name = 'All Effects';
 
 C03_contrast_time_frequency(file, contrast, contrast_name)
