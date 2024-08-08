@@ -125,7 +125,7 @@ C02_estimation(output_dir)
 
 %% contrast
 file = fullfile(output_dir, '\SPM.mat');
-contrast = [eye(3) ones(3,2)/2];
+contrast = [eye(3) ones(3,4)/4];
 contrast_name = 'All Effects';
 
 C03_contrast_time_frequency(file, contrast, contrast_name)
