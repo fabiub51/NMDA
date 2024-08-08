@@ -50,10 +50,8 @@ end
 for sub = subs
     file_dir = fullfile(strcat(data_dir,num2str(sub)));
     file = fullfile(strcat(file_dir,'\mpapMcbdspmeeg_run_01_sss.mat'));
-    contrast = [0.5 0.5 -1];
-    contrast_label = 'Faces vs. Scrambled';
     % set working directory to subject 
     cd(file_dir) 
     addpath(function_directory); % add path to function_directory 
-    D05_contrast(file, contrast, contrast_label)
+    D05_contrast(file) %contrasts are specified within the function 
 end
